@@ -58,7 +58,47 @@
 
 - export import
 
-- 
+### MongoDB基本语法
 
+- 创建集合
 
+` 
+db.createCollextion("user");
+`
+
+- 删除数据库
+
+`
+db.dropDatabase();
+`
+
+- 删除集合
+
+`
+db.collectionName.drop();
+`
+
+- 查询数据
+
+`
+db.collectionName.find({});
+`
+
+- 更新
+
+`
+db.collectionName.update({},{$set:{}});
+`
+
+- 删除
+
+`
+db.collectionName.remove({})
+`
+
+- 增加
+
+`
+db.collectionName.insert({})
+`
 

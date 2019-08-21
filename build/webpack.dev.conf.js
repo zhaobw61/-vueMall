@@ -12,7 +12,7 @@ const portfinder = require('portfinder')
 
 const express = require('express')
 const app = express()//请求server
-var goodsData = require('./../mock/goods.json')//加载本地数据文件
+// var goodsData = require('./../mock/goods.json')//加载本地数据文件
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -46,11 +46,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
-    },
-    before(app) {
-      app.get('/api/goods', (req, res) => {
-        res.json(goodsData);
-      })
     }
   },
   plugins: [
