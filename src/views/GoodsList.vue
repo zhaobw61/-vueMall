@@ -45,13 +45,13 @@
                     <div class="name">{{item.productName}}</div>
                     <div class="price">{{item.salePrice}}</div>
                     <div class="btn-area">
-                      <a href="javascript:;" class="btn btn--m">加入购物车</a>
+                      <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
                     </div>
                   </div>
                 </li>
               </ul>
               <div class="load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30">
-                加载中...
+                <img src="./../assets/loading-spinning-bubbles.svg" alt="加载" v-show="loading">
               </div>
             </div>
           </div>
@@ -90,6 +90,7 @@ export default {
   data(){
     return{
       goodList:[],
+      loading:false,
       priceFilter:[
         {
           startPrice:'0.00',
@@ -129,13 +130,13 @@ export default {
         sort:this.sortFlag?1:-1,
         priceLevel:this.priceChecked,
       }
+      this.loading = true;
       axios.get('goods',{
         params:param
-      }).then((result)=>{
-        var res = result.data;
-        console.log(res);
+      }).then((response)=>{
+        let res = response.data;
+        this.loading = false;
         if(res.status == "0"){
-          console.log('flag',flag);
           if(flag){
             this.goodList = this.goodList.concat(res.result.list);
             if(res.result.list.count == 0){
@@ -159,8 +160,11 @@ export default {
       this.goodList = [];
     },
     loadMore(){
-      this.page ++;
-      this.getGoodsList(true);
+      this.busy = true;
+      setTimeout(()=>{
+        this.page ++;
+        this.getGoodsList(true);
+      },500);
     },
     showFilterPop(){
       this.filterBy = true;
@@ -176,7 +180,18 @@ export default {
       this.filterBy = false;
       this.overLayFlag = false;
     },
-    
+    addCart(productId){
+      axios.post("/goods/addCart",{
+        productId:productId
+      }).then((res)=>{
+        console.log(res);
+        if(res.data.status == 0){
+          alert("加入成功")
+        }else{
+          alert("加入失败")
+        }
+      })
+    }
   }
 };
 </script>

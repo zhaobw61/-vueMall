@@ -20,6 +20,8 @@ mongoose.connection.on("disconnected",function(){
   console.log('disconnected');
 })
 
+// 查询商品列表数据
+
 router.get("/",function(request,response,next){
   let page = parseInt(request.param("page") );
   let pageSize = parseInt(request.param("pageSize"));
@@ -60,6 +62,76 @@ router.get("/",function(request,response,next){
           list:doc
         }
       })
+    }
+  });
+})
+
+// 加入购物车
+router.post("/addCart",function(req,res,next){
+  var userId = '100000077',productId = req.body.productId;
+  var User = require('../models/users');
+
+  User.findOne({userId:userId},function(err,userDoc){
+    if(err){
+      res.json({
+        status:'1',
+        msg:err.message
+      })
+    }else{
+      if(userDoc){
+        let goodsItem = '';
+        userDoc.cartList.forEach(function(item){
+          if(item.productId === productId){
+            goodsItem = item;
+            item.productNum ++ ;
+          }
+        });
+        if(goodsItem){
+          userDoc.save(function(err2,doc){
+            if(err2){
+              res.json({
+                status:"1",
+                msg:err1.message
+              })
+            }else{
+              res.json({
+                status:'0',
+                msg:'',
+                result:"suc"
+              })
+            }
+          })
+        }else{
+          Goods.findOne({productId:productId},function(err1,doc1){
+            if(err1){
+              res.json({
+                status:"1",
+                msg:err1.message
+              })
+            }else{
+              if(doc1){
+                doc1.productNum = 1;
+                doc1.checked = 1;
+                userDoc.cartList.push(doc1);
+                userDoc.save(function(err2,doc){
+                  if(err2){
+                    res.json({
+                      status:"1",
+                      msg:err1.message
+                    })
+                  }else{
+                    res.json({
+                      status:'0',
+                      msg:'',
+                      result:"suc"
+                    })
+                  }
+                })
+              }
+            }
+          })
+        }
+      }
     }
   });
 })
