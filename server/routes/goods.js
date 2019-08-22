@@ -22,7 +22,7 @@ mongoose.connection.on("disconnected",function(){
 
 // 查询商品列表数据
 
-router.get("/",function(request,response,next){
+router.get("/list",function(request,response,next){
   let page = parseInt(request.param("page") );
   let pageSize = parseInt(request.param("pageSize"));
   let priceLevel = parseInt(request.param("priceLevel"));

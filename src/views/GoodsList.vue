@@ -11,7 +11,7 @@
           <a href="javascript:void(0)" class="default cur">Default</a>
           <a @click="sortGoods" href="javascript:void(0)" class="price" >
             Price
-            <svg class="icon icon-arrow-short">
+            <svg class="icon icon-arrow-short" >
               <use xlink:href="#icon-arrow-short" />
             </svg>
           </a>
@@ -59,6 +59,25 @@
       </div>
     </div>
     <div class="md-overlay" v-show="overLayFlag" @click="closePop"></div>
+    <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
+      <p slot="message">
+        请先登录，否则无法加入到购物车里！
+      </p>
+      <div slot="btnGroup">
+        <a href="#" class="btn btn--m" @click="mdShow = false">关闭</a>
+      </div>
+    </modal>
+
+    <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
+      <p slot="message">
+        <span>加入购物车成功</span>
+      </p>
+      <div slot="btnGroup">
+        <a href="javascript:;" class="btn btn--m" @click="mdShowCart = false">继续购物</a>
+        <router-link class="btn btn--m" href="javascript:;" to="/cart">查看购物车</router-link>
+      </div>
+    </modal>
+
     <nav-footer></nav-footer>
   </div>
 </template>
@@ -75,6 +94,14 @@
   line-height: 100px;
   text-align:  center;
 }
+.sort-up{
+  transform: rorate(180deg);
+  transition: all .3s ease-out;
+}
+.btn:hover{
+  background-color: #ffe5e6;
+  transition: add .3s ease-out;
+}
 </style>
 <script>
 import './../assets/css/base.css';
@@ -84,6 +111,7 @@ import '@/assets/css/checkout.css'
 import NavHeader from '@/components/NavHeader';
 import NavFooter from '@/components/NavFooter'
 import NavBread from '@/components/NavBread';
+import Modal from '@/components/Modal'
 import axios from 'axios';
 export default {
   name: "GoodsList",
@@ -91,6 +119,8 @@ export default {
     return{
       goodList:[],
       loading:false,
+      mdShow:false,
+      mdShowCart:false,
       priceFilter:[
         {
           startPrice:'0.00',
@@ -117,7 +147,8 @@ export default {
   components:{
     NavHeader,
     NavFooter,
-    NavBread
+    NavBread,
+    Modal
   },
   mounted:function(){
     this.getGoodsList();
@@ -131,7 +162,7 @@ export default {
         priceLevel:this.priceChecked,
       }
       this.loading = true;
-      axios.get('goods',{
+      axios.get('/goods/list',{
         params:param
       }).then((response)=>{
         let res = response.data;
@@ -186,11 +217,15 @@ export default {
       }).then((res)=>{
         console.log(res);
         if(res.data.status == 0){
-          alert("加入成功")
+          alert("加入成功");
         }else{
-          alert("加入失败")
+          this.mdShow = true;
         }
       })
+    },
+    closeModal(){
+      this.mdShow = false;
+      this.mdShowCart = false;
     }
   }
 };

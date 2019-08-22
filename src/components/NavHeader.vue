@@ -157,7 +157,18 @@
           loginModalFlag:false
         }
       },
+      mounted(){
+        this.checkLogin();
+      },
       methods:{
+        checkLogin(){
+          axios.get("/users/checkLogin").then((response)=>{
+            let res = response.data;
+            if(res.data == '0'){
+              this.nickName = res.result;
+            }
+          });
+        },
         login(){
           axios.post("/users/login",{
             userName:this.userName,
@@ -170,6 +181,14 @@
               this.nickName = res.result.userName;
             }else{
               this.errorTip = true;
+            }
+          })
+        },
+        logOut(){
+          axios.post("/users/logout").then((response)=>{
+            let res = response.data;
+            if(res.status == '0'){
+              this.nickName = '';
             }
           })
         }
