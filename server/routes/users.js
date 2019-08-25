@@ -171,7 +171,7 @@ router.post("/cartEdit",function(){
             if(err1){
               res.json({
                 status:'1',
-                msg:err.message,
+                msg:err1.message,
                 result:""
               });
             }else{
@@ -191,5 +191,23 @@ router.post("/cartEdit",function(){
       }
     })
  })
-
+// 查询用户地址接口
+router.get("/addressList",function(req,res,next){
+  var userId = req.cookies.userId;
+  User.findOne({userId:userId},function(err,doc){
+    if(err){
+      res.json({
+        status:'1',
+        msg:err.message,
+        result:""
+      });
+    }else{
+      res.json({
+        status:'0',
+        msg:'',
+        result:doc.addressList
+      });
+    }
+  })
+})
 module.exports = router;

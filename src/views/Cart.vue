@@ -122,7 +122,7 @@
                 Item total: <span class="total-price">{{totalPrice}}</span>
               </div>
               <div class="btn-wrap">
-                <a class="btn btn--red">Checkout</a>
+                <a class="btn btn--red" v-bind:class="{'btn--dis':checkCount == 0}" @click="checkOut">Checkout</a>
               </div>
             </div>
           </div>
@@ -263,6 +263,13 @@
                 console.log("update suc");
               }
             })
+          },
+          checkOut(){
+            if(this.checkedCount>0){
+              this.$router.push({
+                path:"/address"
+              });
+            }
           }
         }
     }
