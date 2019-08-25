@@ -150,6 +150,8 @@
         limit:3,
         checkIndex:0,
         addressList:[],
+        isMdShow:false,
+        addressId:''
       }
     },
     components:{
@@ -187,6 +189,25 @@
           let res = response.data;
           if(res.status == '0'){
             console.log("ser default");
+            this.init();
+          }
+        })
+      },
+      closeModal(){
+        this.isMdShow = false;
+      },
+      delAddressConfirm(addressId){
+        this.isMdShow = true;
+        this.addressId = addressId;
+      },
+      delAddress(){
+        axios.post('/users/delAddress',{
+          addressId:addressId
+        }).then((response)=>{
+          let res = response.data;
+          if(res.status == '0'){
+            console.log('del success');
+            this.isMdShow = false;
             this.init();
           }
         })
