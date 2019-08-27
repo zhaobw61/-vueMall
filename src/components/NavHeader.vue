@@ -157,6 +157,11 @@
           loginModalFlag:false
         }
       },
+      computed:{
+        nickName(){
+          return this.$store.state.nickName;
+        }
+      },
       mounted(){
         this.checkLogin();
       },
@@ -165,7 +170,9 @@
           axios.get("/users/checkLogin").then((response)=>{
             let res = response.data;
             if(res.data == '0'){
-              this.nickName = res.result;
+              // this.nickName = res.result;
+              this.$store.commit("updateUserInfo",res.result);
+              this.getCartCount();
             }
           });
         },
@@ -189,8 +196,15 @@
             let res = response.data;
             if(res.status == '0'){
               this.nickName = '';
+              this.$$store.commit('updateUserInfo','');
             }
           })
+        },
+        getCartCount(){
+          axios.get('/users/getCartCount').then((response)=>{
+            let res = response.data;
+            this.$store.commit('updateCartCount',res.result);
+          });
         }
       }
     }

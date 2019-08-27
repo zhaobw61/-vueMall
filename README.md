@@ -102,3 +102,46 @@ db.collectionName.remove({})
 db.collectionName.insert({})
 `
 
+### vuex
+
+- 定义：为vue.js开发的状态管理模式
+
+- state:唯一的数据源。
+
+- getters:可以派生出一些新的状态。
+
+- mutation：更改vuex的store中的状态的唯一方法。通过commit提交
+
+- action：提交的是mutation，特点是可以异步。通过dispatch触发
+
+- modules：分割为模块
+
+### webpack
+
+#### 插件
+
+- html-webpack-plugin：生成多个页面
+
+- extract-text-webapck-plugin：抽离文本
+
+- UglifyJsPlugin：合并压缩代码
+
+- CommonsChunkPlugin：抽取公共的模块
+
+- clean-webpack-plugin:删除文件夹
+
+- copy-webpack-plugin：复制文件
+
+#### loader
+
+- css-loader:解析css文件
+
+- sass-loader:解析sass文件
+
+- file-loader:解析图片
+
+- postcss-loader:给css添加前缀
+
+
+
+
