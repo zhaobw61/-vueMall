@@ -40,7 +40,7 @@
 
 - 依赖前置，异步
 
-- define
+- define require
 
 ### CMD:是SeaJS在推广的过程中对模块定义的规范产出
 
